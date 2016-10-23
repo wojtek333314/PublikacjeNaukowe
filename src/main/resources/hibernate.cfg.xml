@@ -6,6 +6,8 @@
     <session-factory>
         <property name="connection.url">jdbc:mysql://sql.rdl.pl:3306/wojtek14_publikacjenaukowe</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.username">wojtek14_admin</property>
+        <property name="connection.password">5555555a</property>
         <mapping class="com.sciencepublications.models.UserEntity"/>
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hbm2ddl.auto">update</property> -->
