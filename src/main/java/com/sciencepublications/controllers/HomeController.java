@@ -6,6 +6,8 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 
@@ -14,7 +16,7 @@ public class HomeController {
 
     @RequestMapping(value = "/")
     public String home() {
-        return "test";
+        return "index";
     }
 
     @RequestMapping(value = "/login")
@@ -30,4 +32,13 @@ public class HomeController {
         return "login";
     }
 
+    @RequestMapping(value = "/api/login" , method= RequestMethod.POST)
+    public String login(@RequestParam("logininput") String login){
+
+        if(login.equals("user")){
+            return "index";
+        }else{
+            return null;
+        }
+    }
 }
