@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<form action="/api/login" method="post" class="form-horizontal">
+<form action="/rest/api/login" method="post" class="form-horizontal">
     <fieldset class="form-group">
         <!-- Text input-->
         <div class="form-group">
