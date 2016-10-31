@@ -1,8 +1,17 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
+<%
+    if (session.getAttribute("isLogged") == null) {
+        response.sendRedirect("/login");
+    }
+%>
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <title>Publications</title>
+    <link rel="shortcut icon" href="../resources/img/book-bookmark-icon.ico"/>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <link href="../resources/css/bootstrap.css" rel="stylesheet">
 
@@ -22,46 +31,34 @@
         tr:hover {
             background-color: #626262;
         }
-
-
     </style>
+    <jsp:include page="navbar.jsp"/>
 </head>
 <body>
+
 <div class="container ">
     <table class="table table-sm">
         <thead>
         <tr>
-            <th >#</th>
+            <th>#</th>
             <th class="col-xs-5">Title</th>
             <th class="col-xs-8">Author</th>
             <th class="col-xs-2"></th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>
-                <button class="btn btn-primary btn-block center-block">See more</button>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>${message}</td>
-            <td>Thornton</td>
-            <td>
-                <button class="btn btn-primary center-block">See more</button>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Larry the Bird</td>
-            <td>Thornton</td>
-            <td>
-                <button class="btn btn-primary center-block">See more</button>
-            </td>
-        </tr>
+        <c:forEach items="${publications}" var="publication">
+            <tr>
+                <th scope="row">${publication.publicationId}</th>
+                <td>${publication.title}</td>
+                <td>${publication.authorName}</td>
+                <td>
+                    <button class="btn btn-primary center-block"
+                            onclick="location.href='/publication?id=${publication.publicationId}'">See more
+                    </button>
+                </td>
+            </tr>
+        </c:forEach>
         </tbody>
     </table>
 </div>

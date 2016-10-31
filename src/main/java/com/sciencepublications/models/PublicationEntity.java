@@ -6,10 +6,11 @@ import javax.persistence.*;
 @Table(name = "publication", schema = "wojtek14_publikacjenaukowe", catalog = "")
 public class PublicationEntity {
     private int publicationId;
-    private int userId;
+    private int authorId;
     private String title;
     private String description;
     private String filename;
+    private String authorName;
 
     @Id
     @Column(name = "publication_id")
@@ -22,13 +23,13 @@ public class PublicationEntity {
     }
 
     @Basic
-    @Column(name = "user_id")
-    public int getUserId() {
-        return userId;
+    @Column(name = "author_id")
+    public int getAuthorId() {
+        return authorId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
     }
 
     @Basic
@@ -61,6 +62,16 @@ public class PublicationEntity {
         this.filename = filename;
     }
 
+    @Basic
+    @Column(name = "author_name")
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,10 +80,11 @@ public class PublicationEntity {
         PublicationEntity that = (PublicationEntity) o;
 
         if (publicationId != that.publicationId) return false;
-        if (userId != that.userId) return false;
+        if (authorId != that.authorId) return false;
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (filename != null ? !filename.equals(that.filename) : that.filename != null) return false;
+        if (authorName != null ? !authorName.equals(that.authorName) : that.authorName != null) return false;
 
         return true;
     }
@@ -80,10 +92,11 @@ public class PublicationEntity {
     @Override
     public int hashCode() {
         int result = publicationId;
-        result = 31 * result + userId;
+        result = 31 * result + authorId;
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (filename != null ? filename.hashCode() : 0);
+        result = 31 * result + (authorName != null ? authorName.hashCode() : 0);
         return result;
     }
 }
