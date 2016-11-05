@@ -9,10 +9,11 @@ public class PublicationEntity {
     private int authorId;
     private String title;
     private String description;
-    private String filename;
     private String authorName;
+    private int fileId;
 
     @Id
+    @GeneratedValue
     @Column(name = "publication_id")
     public int getPublicationId() {
         return publicationId;
@@ -53,16 +54,6 @@ public class PublicationEntity {
     }
 
     @Basic
-    @Column(name = "filename")
-    public String getFilename() {
-        return filename;
-    }
-
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
-
-    @Basic
     @Column(name = "author_name")
     public String getAuthorName() {
         return authorName;
@@ -70,6 +61,16 @@ public class PublicationEntity {
 
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
+    }
+
+    @Basic
+    @Column(name = "file_id")
+    public int getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(int fileId) {
+        this.fileId = fileId;
     }
 
     @Override
@@ -81,9 +82,9 @@ public class PublicationEntity {
 
         if (publicationId != that.publicationId) return false;
         if (authorId != that.authorId) return false;
+        if (fileId != that.fileId) return false;
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
-        if (filename != null ? !filename.equals(that.filename) : that.filename != null) return false;
         if (authorName != null ? !authorName.equals(that.authorName) : that.authorName != null) return false;
 
         return true;
@@ -95,8 +96,8 @@ public class PublicationEntity {
         result = 31 * result + authorId;
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (filename != null ? filename.hashCode() : 0);
         result = 31 * result + (authorName != null ? authorName.hashCode() : 0);
+        result = 31 * result + fileId;
         return result;
     }
 }

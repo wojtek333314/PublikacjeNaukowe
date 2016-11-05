@@ -10,6 +10,7 @@
         <property name="connection.password">5555555a</property>
         <mapping class="com.sciencepublications.models.UserEntity"/>
         <mapping class="com.sciencepublications.models.PublicationEntity"/>
+        <mapping class="com.sciencepublications.models.FileEntity"/>
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hbm2ddl.auto">update</property> -->
     </session-factory>

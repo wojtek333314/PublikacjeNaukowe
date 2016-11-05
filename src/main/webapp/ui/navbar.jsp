@@ -5,7 +5,7 @@
     boolean isLogged = false;
     if (session.getAttribute("isLogged") != null) {
         isLogged = true;
-        session.setMaxInactiveInterval(120);
+        session.setMaxInactiveInterval(180);
     }
 %>
 <nav class="navbar navbar-inverse navbar-static-top">
@@ -16,7 +16,7 @@
                     "        </div>");
 
             out.print("<ul class=\"nav navbar-nav\">\n" +
-                    "            <li class=\"active\"><a href=\"/publications\">Publications list</a></li>\n" +
+                    "            <li><a href=\"/publications\">Publications list</a></li>\n" +
                     "            <li><a href=\"/create\">Add publication</a></li>\n" +
                     "        </ul>");
         } else {

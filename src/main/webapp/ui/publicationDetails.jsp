@@ -32,6 +32,7 @@
     </style>
 
     <jsp:include page="navbar.jsp"/>
+    <c:set var="publicationId" value="${publication.publicationId}"/>
 </head>
 <body>
 <div class="container ">
@@ -52,7 +53,7 @@
         <tr>
             <th class="col-xs-1">Download:</th>
             <th class="col-xs-5">
-                <form method="get" action="file.doc">
+                <form method="get" action="/download/${publication.fileId}">
                     <button class="btn btn-primary">Download</button>
                 </form>
             </th>

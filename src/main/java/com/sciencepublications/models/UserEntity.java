@@ -8,6 +8,7 @@ public class UserEntity {
     private int id;
     private String login;
     private String password;
+    private String role;
 
     @Id
     @Column(name = "id")
@@ -39,6 +40,16 @@ public class UserEntity {
         this.password = password;
     }
 
+    @Basic
+    @Column(name = "role")
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -49,6 +60,7 @@ public class UserEntity {
         if (id != that.id) return false;
         if (login != null ? !login.equals(that.login) : that.login != null) return false;
         if (password != null ? !password.equals(that.password) : that.password != null) return false;
+        if (role != null ? !role.equals(that.role) : that.role != null) return false;
 
         return true;
     }
@@ -58,6 +70,7 @@ public class UserEntity {
         int result = id;
         result = 31 * result + (login != null ? login.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (role != null ? role.hashCode() : 0);
         return result;
     }
 }

@@ -4,6 +4,8 @@
 <%
     if (session.getAttribute("isLogged") == null) {
         response.sendRedirect("/login");
+    } else {
+        Object userId = session.getAttribute("userId");
     }
 %>
 <!DOCTYPE html>
@@ -34,25 +36,27 @@
 </head>
 <body>
 
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="panel panel-login">
-                <form action="/create">
-                    <div class="form-group">
-                        <label for="email">Title:</label>
-                        <input type="email" class="form-control" id="email">
-                    </div>
-                    <div class="form-group">
-                        <label for="comment">Description:</label>
-                        <textarea class="form-control" rows="5" id="comment"></textarea>
-                    </div>
-                    <label class="control-label">Select File</label>
-                    <input id="input-2" name="input2[]" type="file" class="file" multiple data-show-upload="false" data-show-caption="true">
-                    <button style="margin-top: 5%;" type="submit" class="btn btn-primary">Add publication</button>
-                </form>
-            </div>
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-login">
+            <form method="POST" action="uploadFile" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" class="form-control" id="title" name="title">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea class="form-control" rows="5" id="description" name="description"></textarea>
+                </div>
+                <input type="hidden" name="userId" value="${userId}">
+                <label class="control-label">Select File</label>
+                <input id="input-2" name="file" type="file" class="file" multiple data-show-upload="false"
+                       data-show-caption="true">
+                <button style="margin-top: 5%;" type="submit" class="btn btn-primary">Add publication</button>
+            </form>
         </div>
     </div>
+</div>
 <script type="text/javascript" src="../resources/js/bootstrap.min.js"></script>
 </body>
 </html>
