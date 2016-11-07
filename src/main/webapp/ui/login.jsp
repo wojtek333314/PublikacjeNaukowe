@@ -28,6 +28,9 @@
     <%
         session.setAttribute("isLogged", "true");
         session.setAttribute("userId", request.getAttribute("userId"));
+        if (request.getAttribute("isAdmin") != null) {
+            session.setAttribute("isAdmin", true);
+        }
         response.sendRedirect("/publications");
     %>
 </c:if>

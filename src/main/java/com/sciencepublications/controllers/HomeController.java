@@ -44,7 +44,10 @@ public class HomeController {
             if (userEntity.getPassword().equals(password) && userEntity.getLogin().equals(login)) {
                 model.addAttribute("result", true);
                 model.addAttribute("userId", userEntity.getId());
-                System.out.println("User:" + userEntity.getLogin() + " with id:" + userEntity.getId() + " is logged in!");
+                if (userEntity.getRole().equals("ADMIN")) {
+                    model.addAttribute("isAdmin", true);
+                }
+                System.out.println(userEntity.getRole() + ":" + userEntity.getLogin() + " with id:" + userEntity.getId() + " is logged in!");
                 break;
             }
         }
@@ -68,6 +71,14 @@ public class HomeController {
         model.addAttribute("publication", publicationEntity);
         session.close();
         return "publicationDetails";
+    }
+
+    @RequestMapping(value = "/edit{id}")
+    public String publicationEdit(@RequestParam("id") int id, ModelMap model) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        model.addAttribute("publication", session.get(PublicationEntity.class, id));
+        session.close();
+        return "edit";
     }
 
     @RequestMapping(value = "/fileDownload")
@@ -158,13 +169,11 @@ public class HomeController {
                 model.addAttribute("publication", publicationEntity);
                 transaction.commit();
                 session.close();
-                System.out.println(fileId+"!!!");
-                httpServletResponse.sendRedirect("/publication?id="+id);
+                System.out.println(fileId + "!!!");
+                httpServletResponse.sendRedirect("/publication?id=" + id);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else {
-
         }
     }
 
@@ -190,4 +199,18 @@ public class HomeController {
 
         return null;
     }
+
+    @RequestMapping(value = "/delete{id}")
+    public String deletePublication(@RequestParam("id") int id, ModelMap model) {
+        System.out.println("I am deleting:" + id);
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        PublicationEntity publicationEntity = (PublicationEntity) session.get(PublicationEntity.class, id);
+        System.out.println("Found publicationEntity to delete!" + publicationEntity.toString());
+        session.delete(publicationEntity);
+        transaction.commit();
+        session.close();
+        return "delete";
+    }
+
 }
