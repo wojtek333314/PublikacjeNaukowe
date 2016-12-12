@@ -2,6 +2,7 @@ package com.sciencepublications.controllers;
 
 import com.sciencepublications.models.FileEntity;
 import com.sciencepublications.models.PublicationEntity;
+import com.sciencepublications.models.TypeOfPublicationsEntity;
 import com.sciencepublications.models.UserEntity;
 import com.sciencepublications.util.HibernateUtil;
 import org.hibernate.Criteria;
@@ -11,9 +12,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -81,6 +80,15 @@ public class HomeController {
         return "edit";
     }
 
+    //robert
+    @RequestMapping(value = "/addTypePublications")
+    public String addTypePublications(ModelMap model) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.close();
+        return "addTypePublications";
+    }
+    //robert
+
     @RequestMapping(value = "/fileDownload")
     public String fileDownload() {
         return "fileDownload";
@@ -131,6 +139,8 @@ public class HomeController {
      * Upload single file using Spring Controller
      */
     @RequestMapping(value = "/uploadFile")
+
+
     public void uploadFileHandler(@RequestParam("title") String title,
                                   @RequestParam("description") String description,
                                   @RequestParam("file") MultipartFile file,
@@ -212,5 +222,35 @@ public class HomeController {
         session.close();
         return "delete";
     }
+
+    //robert i michael
+  @RequestMapping(value = "/addType")
+    public String addType(@RequestParam("name") String name,
+                          @ModelAttribute("dane") ArrayList<String> dane,
+                                  ModelMap model) {
+            try {
+                //System.out.println("asd");
+                for(int i=0;i<dane.size();i++) System.out.println("Dane: " + dane.get(i));
+                Session session;
+                Transaction transaction;
+                session = HibernateUtil.getSessionFactory().openSession();
+                transaction = session.beginTransaction();
+
+                Query query = session
+                        .createSQLQuery("INSERT INTO TypeOfPublications ( name) VALUES (:name)");
+                query.setParameter("name", name);
+                query.executeUpdate();
+                transaction.commit();
+
+                session.close();
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return "addTypePublications";
+    }
+
 
 }

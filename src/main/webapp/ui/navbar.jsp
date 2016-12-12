@@ -18,7 +18,9 @@
             out.print("<ul class=\"nav navbar-nav\">\n" +
                     "            <li><a href=\"/publications\">Publications list</a></li>\n" +
                     "            <li><a href=\"/create\">Add publication</a></li>\n" +
+                    "            <li><a href=\"/addTypePublications\">Add type of publications</a></li>\n" +     //robert
                     "        </ul>");
+
         } else {
             out.print("<div class=\"navbar-header\">\n" +
                     "            <a class=\"navbar-brand\" href=\"/\">Science publications</a>\n" +
