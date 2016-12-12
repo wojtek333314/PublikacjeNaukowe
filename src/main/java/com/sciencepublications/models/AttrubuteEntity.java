@@ -18,8 +18,19 @@ public class AttrubuteEntity {
         return idAttribute;
     }
 
-    public void setIdAttribute(int idAttribute) {
+    public AttrubuteEntity setIdAttribute(int idAttribute) {
         this.idAttribute = idAttribute;
+        return this;
+    }
+
+    public AttrubuteEntity setIdType(int idType) {
+        this.idType = idType;
+        return this;
+    }
+
+    public AttrubuteEntity setName(String name) {
+        this.name = name;
+        return this;
     }
 
     @Basic
@@ -28,9 +39,6 @@ public class AttrubuteEntity {
         return idType;
     }
 
-    public void setIdType(int idType) {
-        this.idType = idType;
-    }
 
     @Basic
     @Column(name = "name")
@@ -38,9 +46,6 @@ public class AttrubuteEntity {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     public boolean equals(Object o) {

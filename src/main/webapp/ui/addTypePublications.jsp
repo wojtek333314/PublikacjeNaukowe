@@ -52,9 +52,6 @@
                     <label for="name">Name of Type:</label>
                     <input type="text" class="form-control" id="name" name="name">
                     ${dane.add("vhvn")}
-                    ${dane.add("vhasdvn")}
-                    ${dane.add("vhvfdsfn")}
-                    ${dane.add("vhvgfn")}
                 </div>
                 <div id="div">
 
@@ -69,21 +66,25 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
 </script>
 <script type="text/javascript" src="../resources/js/bootstrap.min.js"></script>
+<c:set var="count" value="0" scope="page" />
 <script>
-    var lycznik=0;
+    var counter=0;
     function myFunction() {
         var div_text = document.createElement("div");
         var p = document.createElement("P");
         var text="Set Attribut Name:";
         var t = document.createTextNode(text);
-
         div_text.appendChild(t);
+
         var input = document.createElement("INPUT");
-        input.id='ipt' + lycznik;
+        input.type="text";
+        input.name = 'item';
+        <% System.out.println("kurde");%>
         var test_id = document.createTextNode(input.id);
         p.appendChild(test_id);
-        ${dane.add("vhvn")}
-        lycznik++;
+        <c:set var="count" value="${count + 1}" scope="page" />
+        ${dane.add("item")}
+        counter++;
 
         document.getElementById("div").insertBefore(div_text,document.getElementById("btn1"));
         document.getElementById("div").insertBefore(input,document.getElementById("btn1"));

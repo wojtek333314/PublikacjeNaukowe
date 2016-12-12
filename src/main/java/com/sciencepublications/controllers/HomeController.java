@@ -2,7 +2,6 @@ package com.sciencepublications.controllers;
 
 import com.sciencepublications.models.FileEntity;
 import com.sciencepublications.models.PublicationEntity;
-import com.sciencepublications.models.TypeOfPublicationsEntity;
 import com.sciencepublications.models.UserEntity;
 import com.sciencepublications.util.HibernateUtil;
 import org.hibernate.Criteria;
@@ -12,12 +11,16 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 @Controller
@@ -224,32 +227,47 @@ public class HomeController {
     }
 
     //robert i michael
-  @RequestMapping(value = "/addType")
+    @RequestMapping(value = "/addType", method = RequestMethod.POST)
     public String addType(@RequestParam("name") String name,
-                          @ModelAttribute("dane") ArrayList<String> dane,
-                                  ModelMap model) {
-            try {
-                //System.out.println("asd");
-                for(int i=0;i<dane.size();i++) System.out.println("Dane: " + dane.get(i));
-                Session session;
-                Transaction transaction;
-                session = HibernateUtil.getSessionFactory().openSession();
+                          @RequestParam(value = "item") String[] dane,
+                          ModelMap model) {
+        System.out.println(dane.length + " by w");
+        try {
+            //System.out.println("asd");
+            for (String aDane : dane) {
+                System.out.println("Dane: " + dane.length);
+            }
+            Session session;
+            session = HibernateUtil.getSessionFactory().openSession();
+
+            Transaction transaction = session.beginTransaction();
+            Query query = session.createSQLQuery("INSERT INTO TypeOfPublications ( name) VALUES (:name)");
+            query.setParameter("name", name);
+            Integer result = (Integer) query.executeUpdate();
+            transaction.commit();
+
+            System.out.println(result);
+            transaction = session.beginTransaction();
+            Long lastId;
+            lastId= ((BigInteger) session.createSQLQuery("SELECT LAST_INSERT_ID()").uniqueResult()).longValue();
+            transaction.commit();
+            for (String aDane : dane) {
                 transaction = session.beginTransaction();
 
-                Query query = session
-                        .createSQLQuery("INSERT INTO TypeOfPublications ( name) VALUES (:name)");
-                query.setParameter("name", name);
+                query = session.createSQLQuery("INSERT INTO Attrubute (id_type,name) VALUES (:id_type,:name)");
+                query.setParameter("name", aDane);
+                query.setParameter("id_type", lastId);
                 query.executeUpdate();
                 transaction.commit();
-
-                session.close();
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+            session.close();
 
-            return "addTypePublications";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "addTypePublications";
     }
 
 

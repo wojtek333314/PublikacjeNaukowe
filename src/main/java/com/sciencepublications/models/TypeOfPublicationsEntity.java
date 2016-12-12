@@ -2,9 +2,6 @@ package com.sciencepublications.models;
 
 import javax.persistence.*;
 
-/**
- * Created by Robert on 2016-12-09.
- */
 @Entity
 @Table(name = "TypeOfPublications", schema = "wojtek14_publikacjenaukowe", catalog = "")
 public class TypeOfPublicationsEntity {
@@ -17,14 +14,15 @@ public class TypeOfPublicationsEntity {
         return idType;
     }
 
-    public void setIdType(int idType) {
-        this.idType = idType;
-    }
 
     @Basic
     @Column(name = "name")
     public String getName() {
         return name;
+    }
+
+    public void setIdType(int idType) {
+        this.idType = idType;
     }
 
     public void setName(String name) {
