@@ -18,13 +18,21 @@
     <jsp:include page="navbar.jsp"/>
 </head>
 <body>
+<%
+    System.out.println(request.getAttribute("result")+"@");
+    if(request.getAttribute("result")!=null && !((boolean) request.getAttribute("result"))){
+        out.print("<script type=\"text/javascript\">\n" +
+                "    alert('To add new publications you must confirm your account with email!');\n" +
+                "</script>");
+    }
 
-<c:if test="${result==false}">
-    <%
-        response.sendRedirect("/login");
-    %>
-</c:if>
+    if(request.getAttribute("isConfirmed")!=null && !((boolean) request.getAttribute("isConfirmed"))){
+        out.print("<script type=\"text/javascript\">\n" +
+                "    alert('Account confirmed! Please log in!');\n" +
+                "</script>");
+    }
 
+%>
 <c:if test="${result==true}">
     <%
         session.setAttribute("isLogged", "true");

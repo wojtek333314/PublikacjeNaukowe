@@ -4,7 +4,6 @@
 <%
     boolean isLogged = false;
     boolean isAdmin = false;
-    boolean confirmed = false;
 
     if (session.getAttribute("isLogged") != null) {
         isLogged = true;
@@ -12,9 +11,6 @@
         if (session.getAttribute("isAdmin") != null) {
             isAdmin = true;
         }
-
-        System.out.println(session.getAttribute("confirmed"));
-
     }
 %>
 <nav class="navbar navbar-inverse navbar-static-top">
@@ -27,7 +23,7 @@
 
                 out.print("<ul class=\"nav navbar-nav\">\n" +
                         "<li><a href=\"/publications\">Publications list</a></li>\n" +
-                        (confirmed ? "<li><a href=\"/create\">Add publication</a></li>\n" : "")
+                        ( "<li><a href=\"/create\">Add publication</a></li>\n" )
                         +
                         (isAdmin ? "<li><a href=\"/addTypePublications\">Add type of publications</a></li>\n" : "") +
                         "        </ul>");

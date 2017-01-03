@@ -50,10 +50,8 @@ public class HomeController {
         Session session = HibernateUtil.getSessionFactory().openSession();
         ArrayList<UserEntity> users = new ArrayList<UserEntity>(session.createCriteria(UserEntity.class).list());
         for (UserEntity userEntity : users) {
-            System.out.println(userEntity.getConfirmed());
-            if (userEntity.getPassword().equals(password) && userEntity.getLogin().equals(login)) {
+            if (userEntity.getPassword().equals(password) && userEntity.getLogin().equals(login) && userEntity.getConfirmed() == 1) {
                 model.addAttribute("result", true);
-                model.addAttribute("confirmation", true);
                 model.addAttribute("userId", userEntity.getId());
                 if (userEntity.getRole().equals("ADMIN")) {
                     System.out.println("Is admin!");
@@ -61,6 +59,9 @@ public class HomeController {
                 }
                 System.out.println(userEntity.getRole() + ":" + userEntity.getLogin() + " with id:" + userEntity.getId() + " is logged in!");
                 break;
+            }else {
+                System.out.println("adding!");
+                model.addAttribute("result", false);
             }
         }
         session.close();
@@ -147,11 +148,7 @@ public class HomeController {
         query.executeUpdate();
         Long lastId;
         lastId = ((BigInteger) session.createSQLQuery("SELECT LAST_INSERT_ID()").uniqueResult()).longValue();
-        transaction.commit();
-        session.close();
 
-        session = HibernateUtil.getSessionFactory().openSession();
-        transaction = session.beginTransaction();
         UserConfirmEntity userConfirmEntity = new UserConfirmEntity();
         userConfirmEntity.setHash(randomUUID);
         userConfirmEntity.setUserId(lastId.intValue());
@@ -307,13 +304,12 @@ public class HomeController {
                     if (userEntity.getId() == userConfirmEntity.getUserId()) {
                         userEntity.setConfirmed(1);
                         session.update(userEntity);
-                        transaction.commit();
                         session.delete(userConfirmEntity);
                         transaction.commit();
                         System.out.println(hash + " confirmed!");
                         model.addAttribute("isConfirmed", true);
                         session.close();
-                        httpServletResponse.sendRedirect("/login?isConfirmed=true");
+                        httpServletResponse.sendRedirect("/login");
                         return "login";
                     }
                 }
