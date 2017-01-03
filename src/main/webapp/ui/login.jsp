@@ -24,6 +24,7 @@
         response.sendRedirect("/login");
     %>
 </c:if>
+
 <c:if test="${result==true}">
     <%
         session.setAttribute("isLogged", "true");
@@ -34,12 +35,33 @@
         response.sendRedirect("/publications");
     %>
 </c:if>
+<%
+    boolean isConfirmed = false;
+    if (request.getAttribute("isConfirmed") != null) {
+        isConfirmed = true;
+    }
+%>
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-login">
+                <c:choose>
+
+                    <c:when test="${isConfirmed}">
+                        <%
+                            System.out.println("fsasasf");
+                        %>
+                        <div class="alert alert-danger" style="padding-bottom: 10%; padding-top: 10%;
+              margin-left: 10%; margin-right: 10%; margin-top: 10%;" role="alert">
+                            <h1 align="center">
+                                <strong>Gratulacje!</strong> Konto zostało potwierdzone!
+                            </h1>
+                        </div>
+                    </c:when>
+                </c:choose>
                 <br>
                 <p style="margin-left: 3.25%;" class="panel">Fill login form:</p>
+
                 <form action="/login" method="post" class="form-horizontal">
                     <fieldset class="form-group">
                         <!-- Text input-->

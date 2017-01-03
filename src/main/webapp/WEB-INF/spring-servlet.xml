@@ -13,4 +13,23 @@
         <!-- setting maximum upload size -->
         <property name="maxUploadSize" value="20971520" /> <!--20971520(bytes) =  20mb -->
     </bean>
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="rdl.linuxpl.com" />
+        <property name="port" value="587" />
+        <property name="username" value="test@datastore.waw.pl" />
+        <property name="password" value="5555555a" />
+
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="mailMail" class="com.sciencepublications.MailMail">
+        <property name="mailSender" ref="mailSender" />
+    </bean>
+
 </beans>

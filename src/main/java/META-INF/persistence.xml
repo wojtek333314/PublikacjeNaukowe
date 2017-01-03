@@ -11,6 +11,7 @@
         <class>com.sciencepublications.models.AttrubuteEntity</class>
         <class>com.sciencepublications.models.TypeOfPublicationsEntity</class>
         <class>com.sciencepublications.models.ValueEntity</class>
+        <class>com.sciencepublications.models.UserConfirmEntity</class>
         <properties>
             <property name="hibernate.connection.url" value="jdbc:mysql://sql.rdl.pl:3306/wojtek14_publikacjenaukowe"/>
             <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>

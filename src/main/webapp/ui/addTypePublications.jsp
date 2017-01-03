@@ -51,11 +51,10 @@
                 <div class="form-group">
                     <label for="name">Name of Type:</label>
                     <input type="text" class="form-control" id="name" name="name">
-                    ${dane.add("vhvn")}
                 </div>
                 <div id="div">
 
-                    <button id="btn1" style="margin-top: 5%;" type="button" onclick="myFunction()" >Add New Attribute</button>
+                    <button id="btn1" style="margin-top: 5%;" type="button" onclick="addAttribute()" >Add New Attribute</button>
                 </div>
 
                 <button style="margin-top: 5%;" type="submit" class="btn btn-primary">Add Publication Type</button>
@@ -69,7 +68,7 @@
 <c:set var="count" value="0" scope="page" />
 <script>
     var counter=0;
-    function myFunction() {
+    function addAttribute() {
         var div_text = document.createElement("div");
         var p = document.createElement("P");
         var text="Set Attribut Name:";
@@ -78,17 +77,29 @@
 
         var input = document.createElement("INPUT");
         input.type="text";
-        input.name = 'item';
-        <% System.out.println("kurde");%>
+        input.name = "item";
         var test_id = document.createTextNode(input.id);
         p.appendChild(test_id);
+        var isOptional = document.createElement("INPUT");
+        isOptional.type = "checkbox";
+        isOptional.name = "dane_checkbox";
+        isOptional.id = "dane_checkbox";
+        isOptional.checked = false;
+        isOptional.value = "0";
+        var label = document.createElement('label')
+        label.htmlFor = "dane_checkbox";
+        label.appendChild(document.createTextNode(' is optional '));
         <c:set var="count" value="${count + 1}" scope="page" />
         ${dane.add("item")}
+        ${dane_checkbox.add("dane_checkbox")}
         counter++;
 
         document.getElementById("div").insertBefore(div_text,document.getElementById("btn1"));
         document.getElementById("div").insertBefore(input,document.getElementById("btn1"));
+        document.getElementById("div").insertBefore(isOptional,document.getElementById("btn1"));
+        document.getElementById("div").insertBefore(label,document.getElementById("btn1"));
         document.getElementById("div").insertBefore(p,document.getElementById("btn1"));
+
     }
 </script>
 </body>

@@ -9,6 +9,7 @@ public class UserEntity {
     private String login;
     private String password;
     private String role;
+    private boolean confirmed;
 
     @Id
     @Column(name = "id")
@@ -50,6 +51,16 @@ public class UserEntity {
         this.role = role;
     }
 
+    @Basic
+    @Column(name = "confirmed")
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,6 +69,7 @@ public class UserEntity {
         UserEntity that = (UserEntity) o;
 
         if (id != that.id) return false;
+        if (confirmed != that.confirmed) return false;
         if (login != null ? !login.equals(that.login) : that.login != null) return false;
         if (password != null ? !password.equals(that.password) : that.password != null) return false;
         if (role != null ? !role.equals(that.role) : that.role != null) return false;
@@ -71,6 +83,7 @@ public class UserEntity {
         result = 31 * result + (login != null ? login.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (role != null ? role.hashCode() : 0);
+        result = 31 * result + (confirmed ? 1 : 0);
         return result;
     }
 }

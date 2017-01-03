@@ -3,29 +3,45 @@
          pageEncoding="UTF-8" %>
 <%
     boolean isLogged = false;
+    boolean isAdmin = false;
+    boolean confirmed = false;
+
     if (session.getAttribute("isLogged") != null) {
         isLogged = true;
         session.setMaxInactiveInterval(180);
+        if (session.getAttribute("isAdmin") != null) {
+            isAdmin = true;
+        }
+        if (session.getAttribute("confirmed") != null) {
+            confirmed = true;
+        }
     }
 %>
 <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container-fluid">
-        <% if (isLogged) {
-            out.print("<div class=\"navbar-header\">\n" +
-                    "            <a class=\"navbar-brand\" href=\"/publications\">Science publications</a>\n" +
-                    "        </div>");
+        <%
+            if (isLogged) {
+                out.print("<div class=\"navbar-header\">\n" +
+                        "            <a class=\"navbar-brand\" href=\"/publications\">Science publications</a>\n" +
+                        "        </div>");
 
-            out.print("<ul class=\"nav navbar-nav\">\n" +
-                    "            <li><a href=\"/publications\">Publications list</a></li>\n" +
-                    "            <li><a href=\"/create\">Add publication</a></li>\n" +
-                    "            <li><a href=\"/addTypePublications\">Add type of publications</a></li>\n" +     //robert
-                    "        </ul>");
-
-        } else {
-            out.print("<div class=\"navbar-header\">\n" +
-                    "            <a class=\"navbar-brand\" href=\"/\">Science publications</a>\n" +
-                    "        </div>");
-        }%>
+                out.print("<ul class=\"nav navbar-nav\">\n" +
+                        "<li><a href=\"/publications\">Publications list</a></li>\n" +
+                        (confirmed ? "<li><a href=\"/create\">Add publication</a></li>\n" : "")
+                        +
+                        (isAdmin ? "<li><a href=\"/addTypePublications\">Add type of publications</a></li>\n" : "") +
+                        "        </ul>");
+                if (!confirmed) {
+                    out.print("<script type=\"text/javascript\">\n" +
+                            "    alert('To add new publications you must confirm your account with email!');\n" +
+                            "</script>");
+                }
+            } else {
+                out.print("<div class=\"navbar-header\">\n" +
+                        "            <a class=\"navbar-brand\" href=\"/\">Science publications</a>\n" +
+                        "        </div>");
+            }
+        %>
 
         <ul class="nav navbar-nav navbar-right">
             <% if (!isLogged) {

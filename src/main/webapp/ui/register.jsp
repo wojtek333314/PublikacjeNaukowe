@@ -44,6 +44,11 @@
                                     <input type="password" name="password" id="password" tabindex="2"
                                            class="form-control" placeholder="Password">
                                 </div>
+                                <label class="col-md-4 control-label" for="email">Email</label>
+                                <div class="form-group">
+                                    <input type="email" name="email" id="email" tabindex="2"
+                                           class="form-control" placeholder="Email">
+                                </div>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6 col-sm-offset-3">

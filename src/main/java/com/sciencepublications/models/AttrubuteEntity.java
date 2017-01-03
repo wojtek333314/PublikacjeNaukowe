@@ -2,15 +2,13 @@ package com.sciencepublications.models;
 
 import javax.persistence.*;
 
-/**
- * Created by Robert on 2016-12-09.
- */
 @Entity
 @Table(name = "Attrubute", schema = "wojtek14_publikacjenaukowe", catalog = "")
 public class AttrubuteEntity {
     private int idAttribute;
     private int idType;
     private String name;
+    private boolean optional;
 
     @Id
     @Column(name = "id_attribute")
@@ -18,19 +16,8 @@ public class AttrubuteEntity {
         return idAttribute;
     }
 
-    public AttrubuteEntity setIdAttribute(int idAttribute) {
+    public void setIdAttribute(int idAttribute) {
         this.idAttribute = idAttribute;
-        return this;
-    }
-
-    public AttrubuteEntity setIdType(int idType) {
-        this.idType = idType;
-        return this;
-    }
-
-    public AttrubuteEntity setName(String name) {
-        this.name = name;
-        return this;
     }
 
     @Basic
@@ -39,6 +26,9 @@ public class AttrubuteEntity {
         return idType;
     }
 
+    public void setIdType(int idType) {
+        this.idType = idType;
+    }
 
     @Basic
     @Column(name = "name")
@@ -46,6 +36,19 @@ public class AttrubuteEntity {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Basic
+    @Column(name = "optional")
+    public boolean isOptional() {
+        return optional;
+    }
+
+    public void setOptional(boolean optional) {
+        this.optional = optional;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -56,6 +59,7 @@ public class AttrubuteEntity {
 
         if (idAttribute != that.idAttribute) return false;
         if (idType != that.idType) return false;
+        if (optional != that.optional) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
 
         return true;
@@ -66,6 +70,7 @@ public class AttrubuteEntity {
         int result = idAttribute;
         result = 31 * result + idType;
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (optional ? 1 : 0);
         return result;
     }
 }
