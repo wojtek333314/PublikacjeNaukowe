@@ -50,16 +50,14 @@ public class HomeController {
         Session session = HibernateUtil.getSessionFactory().openSession();
         ArrayList<UserEntity> users = new ArrayList<UserEntity>(session.createCriteria(UserEntity.class).list());
         for (UserEntity userEntity : users) {
-            System.out.println(userEntity.getLogin() + ":"+login);
+            System.out.println(userEntity.getConfirmed());
             if (userEntity.getPassword().equals(password) && userEntity.getLogin().equals(login)) {
                 model.addAttribute("result", true);
+                model.addAttribute("confirmation", true);
                 model.addAttribute("userId", userEntity.getId());
                 if (userEntity.getRole().equals("ADMIN")) {
                     System.out.println("Is admin!");
                     model.addAttribute("isAdmin", true);
-                }
-                if(userEntity.isConfirmed()){
-                    model.addAttribute("confirmed");
                 }
                 System.out.println(userEntity.getRole() + ":" + userEntity.getLogin() + " with id:" + userEntity.getId() + " is logged in!");
                 break;
@@ -307,12 +305,13 @@ public class HomeController {
             if (userConfirmEntity.getHash().equals(hash)) {
                 for (UserEntity userEntity : users) {
                     if (userEntity.getId() == userConfirmEntity.getUserId()) {
-                        userEntity.setConfirmed(true);
+                        userEntity.setConfirmed(1);
                         session.update(userEntity);
+                        transaction.commit();
                         session.delete(userConfirmEntity);
+                        transaction.commit();
                         System.out.println(hash + " confirmed!");
                         model.addAttribute("isConfirmed", true);
-                        transaction.commit();
                         session.close();
                         httpServletResponse.sendRedirect("/login?isConfirmed=true");
                         return "login";

@@ -9,7 +9,7 @@ public class UserEntity {
     private String login;
     private String password;
     private String role;
-    private boolean confirmed;
+    private int confirmed;
 
     @Id
     @Column(name = "id")
@@ -53,11 +53,11 @@ public class UserEntity {
 
     @Basic
     @Column(name = "confirmed")
-    public boolean isConfirmed() {
+    public int getConfirmed() {
         return confirmed;
     }
 
-    public void setConfirmed(boolean confirmed) {
+    public void setConfirmed(int confirmed) {
         this.confirmed = confirmed;
     }
 
@@ -83,7 +83,7 @@ public class UserEntity {
         result = 31 * result + (login != null ? login.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (role != null ? role.hashCode() : 0);
-        result = 31 * result + (confirmed ? 1 : 0);
+        result = 31 * result + confirmed;
         return result;
     }
 }

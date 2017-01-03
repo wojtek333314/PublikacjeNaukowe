@@ -12,9 +12,9 @@
         if (session.getAttribute("isAdmin") != null) {
             isAdmin = true;
         }
-        if (session.getAttribute("confirmed") != null) {
-            confirmed = true;
-        }
+
+        System.out.println(session.getAttribute("confirmed"));
+
     }
 %>
 <nav class="navbar navbar-inverse navbar-static-top">
@@ -31,11 +31,6 @@
                         +
                         (isAdmin ? "<li><a href=\"/addTypePublications\">Add type of publications</a></li>\n" : "") +
                         "        </ul>");
-                if (!confirmed) {
-                    out.print("<script type=\"text/javascript\">\n" +
-                            "    alert('To add new publications you must confirm your account with email!');\n" +
-                            "</script>");
-                }
             } else {
                 out.print("<div class=\"navbar-header\">\n" +
                         "            <a class=\"navbar-brand\" href=\"/\">Science publications</a>\n" +

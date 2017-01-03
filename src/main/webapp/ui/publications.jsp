@@ -11,6 +11,12 @@
             isAdmin = true;
         }
     }
+    boolean confirmed = false;
+
+    if (session.getAttribute("confirmed") != null) {
+        confirmed = true;
+        System.out.println("he is confirmed...");
+    }
 %>
 <!DOCTYPE html>
 <html>
@@ -41,7 +47,11 @@
     <jsp:include page="navbar.jsp"/>
 </head>
 <body>
+<%
+    if (!confirmed) {
 
+    }
+%>
 <c:choose>
     <c:when test="${publications.size()==0}">
         <div class="alert alert-danger" style="padding-bottom: 10%; padding-top: 10%;
