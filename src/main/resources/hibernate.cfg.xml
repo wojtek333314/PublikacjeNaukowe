@@ -12,6 +12,8 @@
         <mapping class="com.sciencepublications.models.PublicationEntity"/>
         <mapping class="com.sciencepublications.models.FileEntity"/>
         <mapping class="com.sciencepublications.models.UserConfirmEntity"/>
+        <mapping class="com.sciencepublications.models.TypeOfPublicationsEntity"/>
+        <mapping class="com.sciencepublications.models.AttrubuteEntity"/>
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hbm2ddl.auto">update</property> -->
     </session-factory>

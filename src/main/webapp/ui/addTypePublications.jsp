@@ -80,15 +80,7 @@
         input.name = "item";
         var test_id = document.createTextNode(input.id);
         p.appendChild(test_id);
-        var isOptional = document.createElement("INPUT");
-        isOptional.type = "checkbox";
-        isOptional.name = "dane_checkbox";
-        isOptional.id = "dane_checkbox";
-        isOptional.checked = false;
-        isOptional.value = "0";
         var label = document.createElement('label')
-        label.htmlFor = "dane_checkbox";
-        label.appendChild(document.createTextNode(' is optional '));
         <c:set var="count" value="${count + 1}" scope="page" />
         ${dane.add("item")}
         ${dane_checkbox.add("dane_checkbox")}
@@ -96,7 +88,6 @@
 
         document.getElementById("div").insertBefore(div_text,document.getElementById("btn1"));
         document.getElementById("div").insertBefore(input,document.getElementById("btn1"));
-        document.getElementById("div").insertBefore(isOptional,document.getElementById("btn1"));
         document.getElementById("div").insertBefore(label,document.getElementById("btn1"));
         document.getElementById("div").insertBefore(p,document.getElementById("btn1"));
 

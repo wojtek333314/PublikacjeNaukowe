@@ -8,12 +8,11 @@ public class PublicationEntity {
     private int publicationId;
     private int authorId;
     private String title;
-    private String description;
+    private String json;
     private String authorName;
     private int fileId;
 
     @Id
-    @GeneratedValue
     @Column(name = "publication_id")
     public int getPublicationId() {
         return publicationId;
@@ -44,13 +43,13 @@ public class PublicationEntity {
     }
 
     @Basic
-    @Column(name = "description")
-    public String getDescription() {
-        return description;
+    @Column(name = "json")
+    public String getJson() {
+        return json;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setJson(String json) {
+        this.json = json;
     }
 
     @Basic
@@ -84,7 +83,7 @@ public class PublicationEntity {
         if (authorId != that.authorId) return false;
         if (fileId != that.fileId) return false;
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (json != null ? !json.equals(that.json) : that.json != null) return false;
         if (authorName != null ? !authorName.equals(that.authorName) : that.authorName != null) return false;
 
         return true;
@@ -95,7 +94,7 @@ public class PublicationEntity {
         int result = publicationId;
         result = 31 * result + authorId;
         result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (json != null ? json.hashCode() : 0);
         result = 31 * result + (authorName != null ? authorName.hashCode() : 0);
         result = 31 * result + fileId;
         return result;

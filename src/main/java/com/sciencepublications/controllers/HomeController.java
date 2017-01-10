@@ -1,10 +1,7 @@
 package com.sciencepublications.controllers;
 
 import com.sciencepublications.MailMail;
-import com.sciencepublications.models.FileEntity;
-import com.sciencepublications.models.PublicationEntity;
-import com.sciencepublications.models.UserConfirmEntity;
-import com.sciencepublications.models.UserEntity;
+import com.sciencepublications.models.*;
 import com.sciencepublications.util.HibernateUtil;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -14,12 +11,10 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -59,8 +54,7 @@ public class HomeController {
                 }
                 System.out.println(userEntity.getRole() + ":" + userEntity.getLogin() + " with id:" + userEntity.getId() + " is logged in!");
                 break;
-            }else {
-                System.out.println("adding!");
+            } else {
                 model.addAttribute("result", false);
             }
         }
@@ -96,7 +90,7 @@ public class HomeController {
 
     //robert
     @RequestMapping(value = "/addTypePublications")
-    public String addTypePublications(ModelMap model) {
+    public String addTypePublications(HttpServletRequest request) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.close();
         return "addTypePublications";
@@ -109,9 +103,53 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/create")
-    public String createPublication() {
+    public String createPublication(HttpServletRequest request) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        ArrayList<TypeOfPublicationsEntity> typeOfPublicationsEntities = new ArrayList<TypeOfPublicationsEntity>(session.createCriteria(TypeOfPublicationsEntity.class).list());
+        request.setAttribute("typesList", typeOfPublicationsEntities);
+        request.setAttribute("type", typeOfPublicationsEntities.get(0).getName());
+        session.close();
         return "createPublication";
     }
+
+
+    @RequestMapping(value = "/getPublication", method = RequestMethod.GET)
+    @ResponseBody
+    public String getPublicationDetailsView(@RequestParam("id") String id) {
+        String result = "";
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        ArrayList<PublicationEntity> publicationEntities = new ArrayList<PublicationEntity>(session.createCriteria(PublicationEntity.class).list());
+        for(PublicationEntity publicationEntity : publicationEntities){
+            if(publicationEntity.getPublicationId() == Integer.parseInt(id)){
+                result = publicationEntity.getJson();
+                break;
+            }
+        }
+        session.close();
+        return result;
+    }
+
+    @RequestMapping(value = "/getForm", method = RequestMethod.GET)
+    @ResponseBody
+    public String getAttributesFromTypeOfPublication(@RequestParam("typePublicationId") String id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        String result = "";
+        ArrayList<AttrubuteEntity> attributes = new ArrayList<AttrubuteEntity>(session.createCriteria(AttrubuteEntity.class).list());
+        int pos = 0;
+        for (AttrubuteEntity attrubuteEntity : attributes) {
+            if (attrubuteEntity.getIdType() == Integer.parseInt(id)) {
+                result += " <div class=\"form-group\">\n" +
+                        "<p id=\"label" + pos + "\" for=\"description\"><b>" + attrubuteEntity.getName() + ":</b></p>\n" +
+                        "<textarea id=\"textarea" + pos + "\" class=\"form-control\" rows=\"3\" id=\"" + attrubuteEntity.getName() + "\" " +
+                        "name=\"" + attrubuteEntity.getName() + "\"></textarea>\n" +
+                        "</div>";
+                pos++;
+            }
+        }
+        session.close();
+        return result;
+    }
+
 
     @RequestMapping(value = "/logout")
     public String logout() {
@@ -166,7 +204,7 @@ public class HomeController {
 
     @RequestMapping(value = "/uploadFile")
     public void uploadFileHandler(@RequestParam("title") String title,
-                                  @RequestParam("description") String description,
+                                  @RequestParam("json") String json,
                                   @RequestParam("file") MultipartFile file,
                                   @RequestParam("userId") Integer userId,
                                   ModelMap model,
@@ -195,16 +233,15 @@ public class HomeController {
                 PublicationEntity publicationEntity = new PublicationEntity();
                 publicationEntity.setAuthorId(user.getId());
                 publicationEntity.setAuthorName(user.getLogin());
-                publicationEntity.setDescription(description);
-                publicationEntity.setFileId(fileId);
                 publicationEntity.setTitle(title);
+                publicationEntity.setFileId(fileId);
+                publicationEntity.setJson(json);
 
                 Integer id = (Integer) session.save(publicationEntity);
                 model.addAttribute("publication", publicationEntity);
                 transaction.commit();
                 session.close();
-                System.out.println(fileId + "!!!");
-                httpServletResponse.sendRedirect("/publication?id=" + id);
+                httpServletResponse.sendRedirect("/publications");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -251,15 +288,14 @@ public class HomeController {
     @RequestMapping(value = "/addType", method = RequestMethod.POST)
     public String addType(@RequestParam("name") String name,
                           @RequestParam(value = "item") String[] dane,
-                          @RequestParam(value = "dane_checkbox") String[] dane_checkbox,
                           ModelMap model) {
         try {
             Session session;
             session = HibernateUtil.getSessionFactory().openSession();
-            System.out.println(dane_checkbox.length + "@??@" + dane.length);
             Transaction transaction = session.beginTransaction();
             Query query = session.createSQLQuery("INSERT INTO TypeOfPublications ( name) VALUES (:name)");
             query.setParameter("name", name);
+            query.executeUpdate();
             transaction.commit();
 
             transaction = session.beginTransaction();
@@ -270,11 +306,9 @@ public class HomeController {
             for (String aDane : dane) {
                 transaction = session.beginTransaction();
 
-                query = session.createSQLQuery("INSERT INTO Attrubute (id_type,name,optional) VALUES (:id_type,:name,:optional)");
+                query = session.createSQLQuery("INSERT INTO Attrubute (id_type,name) VALUES (:id_type,:name)");
                 query.setParameter("name", aDane);
                 query.setParameter("id_type", lastId);
-                query.setParameter("optional", dane_checkbox[position]);
-                System.out.println(dane_checkbox[position]);
                 query.executeUpdate();
                 transaction.commit();
                 position++;
@@ -306,7 +340,6 @@ public class HomeController {
                         session.update(userEntity);
                         session.delete(userConfirmEntity);
                         transaction.commit();
-                        System.out.println(hash + " confirmed!");
                         model.addAttribute("isConfirmed", true);
                         session.close();
                         httpServletResponse.sendRedirect("/login");
