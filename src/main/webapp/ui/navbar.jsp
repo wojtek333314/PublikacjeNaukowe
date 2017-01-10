@@ -25,7 +25,9 @@
                         "<li><a href=\"/publications\">Publications list</a></li>\n" +
                         ( "<li><a href=\"/create\">Add publication</a></li>\n" )
                         +
-                        (isAdmin ? "<li><a href=\"/addTypePublications\">Add type of publications</a></li>\n" : "") +
+                        (isAdmin ? "<li><a href=\"/addTypePublications\">Add type of publications</a></li>\n" : "")
+                        +
+                        (isAdmin ? "<li><a href=\"/deleteTypePublications\">Delete type of publications</a></li>\n" : "") +
                         "        </ul>");
             } else {
                 out.print("<div class=\"navbar-header\">\n" +

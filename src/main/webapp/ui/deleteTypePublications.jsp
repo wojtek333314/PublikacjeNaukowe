@@ -40,7 +40,7 @@
 <div class="row">
     <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-login">
-            <form>
+            <form method="POST" id="sendForm" action="deleteType" enctype="multipart/form-data">
                 <div class=\"form-group\">
                     <label for="sel1">Select type of publication:</label>
                     <div class="form-group">
@@ -56,19 +56,7 @@
 
                     </div>
                 </div>
-            </form>
-
-            <form method="POST" id="sendForm" action="uploadFile" enctype="multipart/form-data">
-                <label for="title">Title:</label>
-                <textarea class="form-control" rows="1" id="title" name="title"></textarea>
-                <div class="form-group" id="formContainer">
-                </div>
-                <input type="hidden" name="userId" value="${userId}">
-                <label class="control-label">Select File</label>
-                <input id="json" type="hidden" value="{}" name="json"/>
-                <input id="input-2" name="file" type="file" class="file" multiple data-show-upload="false"
-                       data-show-caption="true">
-                <button style="margin-top: 5%;" type="submit" class="btn btn-primary">Add publication</button>
+                <button style="margin-top: 5%;" type="submit" class="btn btn-primary">Delete</button>
             </form>
         </div>
     </div>
@@ -93,22 +81,6 @@
                 }
             });
         }
-    }
-
-    $('#sendForm').submit(function() {
-        document.getElementById("json").value = prepareJsonResult();
-        return true; // return false to cancel form action
-    });
-
-    function prepareJsonResult() {
-        var result = {};
-        var i = 0;
-        while (document.getElementById("textarea" + i) != null) {
-            result[document.getElementById("label" + i).innerHTML] = document.getElementById("textarea" + i).value;
-            i++;
-        }
-
-        return JSON.stringify(result);
     }
 </script>
 <script type="text/javascript" src="../resources/js/bootstrap.min.js"></script>

@@ -67,7 +67,6 @@
 <script type="text/javascript" src="../resources/js/bootstrap.min.js"></script>
 <c:set var="count" value="0" scope="page" />
 <script>
-    var counter=0;
     function addAttribute() {
         var div_text = document.createElement("div");
         var p = document.createElement("P");
@@ -84,7 +83,6 @@
         <c:set var="count" value="${count + 1}" scope="page" />
         ${dane.add("item")}
         ${dane_checkbox.add("dane_checkbox")}
-        counter++;
 
         document.getElementById("div").insertBefore(div_text,document.getElementById("btn1"));
         document.getElementById("div").insertBefore(input,document.getElementById("btn1"));

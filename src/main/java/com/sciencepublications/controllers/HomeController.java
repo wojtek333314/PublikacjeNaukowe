@@ -3,12 +3,17 @@ package com.sciencepublications.controllers;
 import com.sciencepublications.MailMail;
 import com.sciencepublications.models.*;
 import com.sciencepublications.util.HibernateUtil;
+import jdk.nashorn.internal.parser.JSONParser;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -83,19 +88,28 @@ public class HomeController {
     @RequestMapping(value = "/edit{id}")
     public String publicationEdit(@RequestParam("id") int id, ModelMap model) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        model.addAttribute("publication", session.get(PublicationEntity.class, id));
+        PublicationEntity publicationEntity = (PublicationEntity) session.get(PublicationEntity.class, id);
+        model.addAttribute("publication", publicationEntity);
         session.close();
-        return "edit";
+        return "editPublication";
     }
 
-    //robert
     @RequestMapping(value = "/addTypePublications")
-    public String addTypePublications(HttpServletRequest request) {
+    public String addTypePublications() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.close();
         return "addTypePublications";
     }
-    //robert
+
+    @RequestMapping(value = "/deleteTypePublications")
+    public String deleteTypePublications(HttpServletRequest request) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        ArrayList<TypeOfPublicationsEntity> typeOfPublicationsEntities = new ArrayList<TypeOfPublicationsEntity>(session.createCriteria(TypeOfPublicationsEntity.class).list());
+        request.setAttribute("typesList", typeOfPublicationsEntities);
+        request.setAttribute("type", typeOfPublicationsEntities.get(0).getName());
+        session.close();
+        return "deleteTypePublications";
+    }
 
     @RequestMapping(value = "/fileDownload")
     public String fileDownload() {
@@ -119,8 +133,8 @@ public class HomeController {
         String result = "";
         Session session = HibernateUtil.getSessionFactory().openSession();
         ArrayList<PublicationEntity> publicationEntities = new ArrayList<PublicationEntity>(session.createCriteria(PublicationEntity.class).list());
-        for(PublicationEntity publicationEntity : publicationEntities){
-            if(publicationEntity.getPublicationId() == Integer.parseInt(id)){
+        for (PublicationEntity publicationEntity : publicationEntities) {
+            if (publicationEntity.getPublicationId() == Integer.parseInt(id)) {
                 result = publicationEntity.getJson();
                 break;
             }
@@ -281,10 +295,9 @@ public class HomeController {
         session.delete(publicationEntity);
         transaction.commit();
         session.close();
-        return "delete";
+        return "publications";
     }
 
-    //robert i michael
     @RequestMapping(value = "/addType", method = RequestMethod.POST)
     public String addType(@RequestParam("name") String name,
                           @RequestParam(value = "item") String[] dane,
@@ -321,6 +334,56 @@ public class HomeController {
         }
 
         return "addTypePublications";
+    }
+
+    @RequestMapping(value = "/update{id}", method = RequestMethod.POST)
+    public String updatePublication(@PathVariable("id") Integer id,
+                                    @RequestParam("title") String title,
+                                    @RequestParam("json") String json
+    ) {
+        try {
+            System.out.println("title:" + title);
+            System.out.println("id:" + id);
+            System.out.println("HHHH:" + json);
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            Transaction transaction = session.beginTransaction();
+            PublicationEntity publicationEntityti = (PublicationEntity) session.get(PublicationEntity.class, id);
+
+            if (!title .equals("") ) {
+                publicationEntityti.setTitle(title);
+            }
+            publicationEntityti.setJson(json);
+            session.update(publicationEntityti);
+            transaction.commit();
+            session.close();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "redirect:publications";
+    }
+
+    @RequestMapping(value = "/deleteType", method = RequestMethod.POST)
+    public String deleteType(@RequestParam("types") Integer id,
+                             ModelMap model
+    ) {
+        try {
+            System.out.println("I am deleting type:" + id);
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            Transaction transaction = session.beginTransaction();
+            TypeOfPublicationsEntity typeOfPublicationsEntity = (TypeOfPublicationsEntity) session.get(TypeOfPublicationsEntity.class, id);
+            session.delete(typeOfPublicationsEntity);
+            transaction.commit();
+            session.close();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "redirect:deleteTypePublications";
     }
 
     @RequestMapping(value = "/confirm{hash}")
