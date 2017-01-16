@@ -31,9 +31,15 @@
             color: #ffffff;
         }
 
+        .button_style {
+            margin-bottom: 1%;
+            width: 15%;
+        }
+
         tr:hover {
             background-color: #626262;
         }
+
     </style>
 
     <jsp:include page="navbar.jsp"/>
@@ -57,21 +63,8 @@
             </thead>
         </table>
         <div id="publicationContainer"></div>
-        <table class="table table-sm">
-            <thead>
-            <tr>
-                <th class="col-xs-1">Download:</th>
-                <th class="col-xs-5">
-                    <form method="get" action="/download/${publication.fileId}">
-                        <button class="btn btn-primary">Download</button>
-                    </form>
-                </th>
-            </tr>
-            </thead>
-
-        </table>
+        <button class="button_style btn btn-success btn-block">Update</button>
         <input id="json" type="hidden" value="{}" name="json"/>
-        <button class="btn btn-primary">Update</button>
     </div>
 </form>
 

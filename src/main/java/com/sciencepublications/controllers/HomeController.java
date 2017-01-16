@@ -295,7 +295,7 @@ public class HomeController {
         session.delete(publicationEntity);
         transaction.commit();
         session.close();
-        return "publications";
+        return "redirect:publications";
     }
 
     @RequestMapping(value = "/addType", method = RequestMethod.POST)

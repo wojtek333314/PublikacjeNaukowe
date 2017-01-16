@@ -76,12 +76,12 @@
                             <%
                                 PublicationEntity publication = (PublicationEntity) pageContext.getAttribute("publication");
                                 if (isAdmin || publication.getAuthorId() == (int) session.getAttribute("userId")) {
-                                    out.print(" <button type=\"button\"  class=\"btn btn-primary btn-block\"\n" +
+                                    out.print(" <button type=\"button\"  class=\"btn btn-success btn-block\"\n" +
                                             "  onclick=\"location.href='/edit?id=" + publication.getPublicationId() + "'\">Edit\n" +
                                             " </button>");
                                 }
 
-                                if (isAdmin) {
+                                if (isAdmin || publication.getAuthorId() == (int) session.getAttribute("userId")) {
                                     out.print(" <button type=\"button\" class=\"btn btn-danger btn-block\"\n" +
                                             "  onclick=\"location.href='/delete?id=" + publication.getPublicationId() + "'\">Delete\n" +
                                             " </button>");
