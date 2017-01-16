@@ -20,6 +20,8 @@
 <body>
 <%
     session.removeAttribute("isLogged");
+    session.removeAttribute("isAdmin");
+    session.removeAttribute("userId");
     response.sendRedirect("/login");
 %>
 <script type="text/javascript" src="../resources/js/bootstrap.min.js"></script>
